@@ -1,5 +1,14 @@
 # yaml-language-server: $schema=./.github/registry_schema.json
 
+- title: Benchmarking FP8 with vLLM
+  path: content/vllm-l40s-fp8/README.md
+  date: 2024-08-29
+  authors:
+    - epetersen
+  tags:
+    - L40S
+    - Llama3
+    - vLLM
 - title: Serving Llama3 at 3,500 tokens/s
   path: content/llama3-qserve/README.md
   date: 2024-07-16
