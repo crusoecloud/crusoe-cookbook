@@ -40,7 +40,7 @@ Now, we'll use tmux to run our server inside of a detachable session.
 tmux new -s server
 uv run vllm serve $MODEL --enable-chunked-prefill --disable-log-requests --tensor-parallel-size $TP_SIZE
 ```
-vLLM will download the model from HF and serve it on port 8000. We can detach from the tmux session with `ctrl+b`. Next, we'll simulate a client.
+vLLM will download the model from HF and serve it on port 8000. Now, detach from the tmux session (`ctrl+b` then `d`) and we'll simulate a client.
 ```bash
 tmux new -s client
 chmod +x run_benchmark.sh
