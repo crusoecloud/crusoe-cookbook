@@ -64,15 +64,12 @@ done
 This is a convenience wrapper that re-runs the vLLM `benchmarks/benchmark_serving.py` with queries-per-second (QPS) gradually increasing from 1 to 9 and saves the results. After each run completes, a JSON will appear in the same directory containing inference statistics.
 
 # Results
-We ran benchmarks across the fp8 and fp16 versions of both Llama3.1 8B and 70B. 
-<p align="center">
-  <img src="https://github.com/crusoecloud/crusoe-cookbook/blob/main/content/vllm-l40s-fp8/tpot_vs_qps_chart.png" />
-</p>
+We ran benchmarks across the fp8 and fp16 versions of both Llama3.1 8B and 70B.
+
+![TPOT vs QPS](https://github.com/crusoecloud/crusoe-cookbook/blob/main/content/vllm-l40s-fp8/tpot_vs_qps_chart.png?raw=true "TPOT vs QPS")
 In the above chart, we compare time-per-output-token (TPOT) across different QPS volumes. For fp16 70B we run across 8 GPUs while in fp8 we only use 4 and we still maintain the same TPOT range. The 8B models are run across 1 GPU though fp8 is noticeable faster.
 
-<p align="center">
-  <img src="https://github.com/crusoecloud/crusoe-cookbook/blob/main/content/vllm-l40s-fp8/ttft_vs_qps_chart.png" />
-</p>
+![TPOT vs QPS](https://github.com/crusoecloud/crusoe-cookbook/blob/main/content/vllm-l40s-fp8/ttft_vs_qps_chart.png?raw=true "TTFT vs QPS")
 Looking at our time-to-first-token (TTFT), we observe the same trends. Even though the fp8 70B is run across half as many GPUs, its TTFT is roughly the same as the fp16 version on 8.
 
 # Converting Llama3 models to FP8
