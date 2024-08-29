@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=./.github/registry_schema.json
+
+- title: Serving Llama3 at 3,500 tokens/s
+  path: content/llama3-qserve/README.md
+  date: 2024-07-16
+  authors:
+    - epetersen
+  tags:
+    - L40S
+    - Llama3
+    - Beginner
+- title: 80 tokens/s with DBRX in 15 minutes
+  path: content/dbrx-inference-tutorial/README.md
+  date: 2024-07-19
+  authors:
+    - epetersen
+  tags:
+    - L40S
+    - DBRX
+    - vLLM

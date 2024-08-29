@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=./.github/authors_schema.json
+
+epetersen:
+  name: "Ethan Petersen"
+  website: "https://www.linkedin.com/in/ethxnp/"
+  avatar: "https://ethan.site/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Favatar.4cb4a39c.jpeg&w=128&q=75"
