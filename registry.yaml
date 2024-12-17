@@ -36,3 +36,12 @@
     - L40S
     - DBRX
     - vLLM
+- title: Enhanced Slurm Cluster Monitoring with GPUd and Lepton AI
+  path: content/gpud-slurm/README.md
+  date: 2024-12-16
+  authors:
+    - mmcculloch
+  tags:
+    - A40S
+    - GPUd
+    - Monitoring
