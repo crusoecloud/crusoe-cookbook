@@ -18,27 +18,13 @@ To set up storage on your virtual machine, execute the following commands:
 ```bash
 mkfs.ext4 /dev/vdb
 mkdir /scratch
-mount -t ext4 /dev/vdb /scratch
+sudo mount -t ext4 /dev/vdb /scratch
 ```
 
 Verify that the storage has been mounted correctly and check for sufficient capacity:
 
 ```bash
 df -h /scratch
-```
-
-## Install Dependencies
-
-We'll use `uv` to efficiently manage dependencies during setup.
-
-### Installing Required Packages
-
-Start by installing necessary system utilities and `uv`:
-
-```bash
-apt-get update && apt-get install -y curl tmux
-curl -LsSf https://astral.sh/uv/install.sh | sh
-source $HOME/.cargo/env
 ```
 
 ### Cloning the Cookbook Repository
@@ -59,13 +45,20 @@ src/
 │   ├── processor.py
 ```
 
-### Setting Up the Virtual Environment
+## Install Dependencies
 
-Set up the virtual environment and install the required dependencies:
+To begin, update your system and install the Python development headers:
 
 ```bash
-uv init
-uv add -q torch==2.0.1 transformers==4.32.1 datasets==2.14.4 peft==0.5.0 bitsandbytes==0.41.1 trl==0.7.1
+sudo apt-get update
+sudo apt-get install python3-dev -y
+sudo apt-get install python3-pip -y
+```
+
+Next, install the necessary Python libraries. If you've just created your environment, use the following command:
+
+```bash
+pip install torch==2.6.0 transformers==4.50.1 datasets==3.4.1 peft==0.15.1 bitsandbytes==0.45.4 trl==0.12.0 accelerate==1.5.2
 ```
 
 ### Exporting Environment Variables

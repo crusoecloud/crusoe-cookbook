@@ -6,7 +6,7 @@ class Config:
 
     dataset_name = "Salesforce/dialogstudio"
     dataset_config = "TweetSumm"
-
+    
     model_id = "meta-llama/Llama-2-70b-hf"
     lora_target_modules = [
         "q_proj",
