@@ -16,9 +16,10 @@ For optimal performance, your system should meet the following hardware specific
 To set up storage on your virtual machine, execute the following commands:
 
 ```bash
-mkfs.ext4 /dev/vdb
-mkdir /scratch
+sudo mkfs.ext4 /dev/vdb
+sudo mkdir scratch
 sudo mount -t ext4 /dev/vdb /scratch
+sudo chmod 777 -R /scratch
 ```
 
 Verify that the storage has been mounted correctly and check for sufficient capacity:
