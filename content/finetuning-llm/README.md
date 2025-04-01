@@ -81,7 +81,6 @@ The `HF_HOME` variable points to the mounted storage where models and datasets w
 
 **Note:** You can generate an HF token by following the instructions provided on the Hugging Face website: [How to generate a Hugging Face token](https://huggingface.co/docs/hub/security-tokens).
 
-
 ### Running the Training Script
 
 The training process is contained in the `main.py` script. Run it with:
@@ -93,7 +92,6 @@ accelerate launch --mixed_precision 'bf16' main.py
 This command launches the training script using the `accelerate` library, which is optimized for multi-GPU and distributed training. The `--mixed_precision 'bf16'` argument ensures that the training uses bfloat16 precision, optimizing memory usage and improving training speed without sacrificing model performance.
 
 By running this command, the script will initialize all components (like the model, tokenizer, dataset, and trainer) and start the training process as described earlier.
-
 
 Now that we know how to run training script, let's take a closer look at it. This script orchestrates the entire training pipeline, including model initialization, dataset preparation, and fine-tuning with LoRA and 4-bit quantization. Understanding its structure will help us grasp how these techniques work in practice.
 
@@ -109,7 +107,7 @@ from datasets import load_dataset
 dataset = load_dataset(
     "Salesforce/dialogstudio", 
     "TweetSumm", 
-    token=<your_hf_token>  # Required for gated datasets
+    trust_remote_code=True
 )
 ```
 
@@ -140,7 +138,7 @@ processed_dataset = processor.process_dataset(dataset, tokenize=True)
 
 This ensures that each conversation is formatted as follows:
 
-```json
+```
 ### Instruction: Below is a conversation between a human and an AI agent. Write a summary of the conversation.
 
 ### Input:
@@ -152,7 +150,6 @@ The user is asking about the process for checking in for a flight. The agent sug
 ```
 
 This format makes it easier for the model to learn the relationship between user queries and AI responses, while also maintaining the necessary structure for summarization tasks.
-
 
 ## Loading the model
 
@@ -174,7 +171,7 @@ bnb_config = BitsAndBytesConfig(
 )
 
 model = AutoModelForCausalLM.from_pretrained(
-    meta-llama/Llama-2-70b-hf,
+    "meta-llama/Llama-2-70b-hf",
     quantization_config=bnb_config,
     trust_remote_code=True,
     use_cache=False,
@@ -227,26 +224,36 @@ The `TrainingArguments` class specifies all the hyperparameters and settings for
 from transformers import TrainingArguments
 
 training_args = TrainingArguments(
-    output_dir="./results",
-    optim="adamw_8bit",
-    bf16=True,
-    max_grad_norm=0.3
+    # Output and logging
+    output_dir=config.output_dir,
+    logging_steps=config.training_args["logging_steps"],
+    report_to=None,
+
+    # Optimization and training dynamics  
+    optim=config.training_args["optim"],
+    learning_rate=config.training_args["learning_rate"],
+    max_grad_norm=config.training_args["max_grad_norm"],
     num_train_epochs=2,
-    warmup_ratio=0.1,
-    group_by_length=True,
-    gradient_checkpointing=True,
-    ddp_find_unused_parameters=False,
+    warmup_ratio=config.training_args["warmup_ratio"],
     warmup_steps=2,
-    per_device_train_batch_size=2,
-    gradient_accumulation_steps=3,
-    learning_rate=2e-4,
-    logging_steps=10,
-    save_strategy="steps", 
+
+    # Batch and gradient settings  
+    per_device_train_batch_size=config.training_args["per_device_train_batch_size"],
+    gradient_accumulation_steps=config.training_args["gradient_accumulation_steps"],
+    gradient_checkpointing=True,
+    bf16=True,
+
+    # Distributed training  
+    ddp_find_unused_parameters=False,
+    group_by_length=True,
+
+    # Checkpointing and evaluation  
+    save_strategy="steps",
     save_steps=100,
     evaluation_strategy="steps",
     eval_steps=50,
-    do_eval=True
-)
+    do_eval=True,
+    )
 ```
 
 ### Starting the Training with the Trainer
@@ -254,7 +261,7 @@ training_args = TrainingArguments(
 To begin training, we use the `SFTTrainer` class, which is designed for training supervised fine-tuning models. We will pass the processed dataset and the model along with the training arguments and PEFT configuration:
 
 ```python
-from trainer import SFTTrainer
+from trl import SFTTrainer
 
 trainer = SFTTrainer(
     model=model,

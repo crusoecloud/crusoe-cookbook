@@ -9,7 +9,8 @@ class Processor:
     """Processes conversation data into training format."""
 
     DEFAULT_SYSTEM_PROMPT = (
-        "Summarize this conversation between a human and AI assistant, " "capturing key points and maintaining context."
+        "Summarize this conversation between a human and AI assistant, "
+        "capturing key points and maintaining context."
     )
     COLUMNS_TO_REMOVE = [
         "original dialog id",
@@ -60,7 +61,8 @@ class Processor:
             Formatted conversation string
         """
         return "\n".join(
-            f"user: {self.clean_text(turn['user utterance'])}\n" f"agent: {self.clean_text(turn['system response'])}"
+            f"user: {self.clean_text(turn['user utterance'])}\n"
+            f"agent: {self.clean_text(turn['system response'])}"
             for turn in log
         )
 
@@ -89,7 +91,11 @@ class Processor:
             Complete training prompt
         """
         response_part = f"### Response:\n{summary}" if summary else "### Response:\n"
-        return f"### Instruction: {self.system_prompt}\n\n" f"### Input:\n{conversation}\n\n" f"{response_part}"
+        return (
+            f"### Instruction: {self.system_prompt}\n\n"
+            f"### Input:\n{conversation}\n\n"
+            f"{response_part}"
+        )
 
     def process_sample(self, sample: dict) -> dict[str, str]:
         """Process single sample into training format.
@@ -105,10 +111,14 @@ class Processor:
         return {
             "conversation": conversation,
             "summary": summary,
-            "text": self.generate_prompt(conversation, summary if summary.strip() else None),
+            "text": self.generate_prompt(
+                conversation, summary if summary.strip() else None
+            ),
         }
 
-    def process_dataset(self, dataset: Dataset | DatasetDict, tokenize: bool = False) -> Dataset | DatasetDict:
+    def process_dataset(
+        self, dataset: Dataset | DatasetDict, tokenize: bool = False
+    ) -> Dataset | DatasetDict:
         """Process dataset with optional tokenization.
 
         Args:
@@ -120,7 +130,11 @@ class Processor:
         """
 
         def _process(data: Dataset) -> Dataset:
-            data = data.shuffle(seed=self.seed).map(self.process_sample).remove_columns(self.COLUMNS_TO_REMOVE)
+            data = (
+                data.shuffle(seed=self.seed)
+                .map(self.process_sample)
+                .remove_columns(self.COLUMNS_TO_REMOVE)
+            )
             if tokenize and self.tokenizer:
                 data = data.map(lambda x: self.tokenizer(x["text"]))
             return data
