@@ -43,4 +43,11 @@
     - LoRA
     - Llama2
     - bitsandbytes
-
+- title: Integrating observability stack into your Kubernetes cluster
+  path: content/observability-kubernetes/README.md
+  date: 2024-12-11
+  authors:
+    - projek
+  tags:
+    - kubernetes
+    - grafana
