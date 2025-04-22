@@ -40,7 +40,18 @@ additionalScrapeConfigs:
     action: replace
     target_label: kubernetes_node
 ```
+Optionally, add the following at the beginning of `prometheus-values.yaml` to use NodePort `31000` for Grafana UI:
 
+(You will need to add ingress firewall rule to allow access to port `31000` in Crusoe VPC)
+
+```yaml
+grafana:
+  service:
+    type: NodePort
+    nodePort: 31000
+```
+
+Then, run the following command to install the Prometheus Operator:
 ```bash
 $ helm install prometheus-operator prometheus-community/kube-prometheus-stack \
     --namespace monitoring -f prometheus-values.yaml --create-namespace
@@ -112,6 +123,7 @@ spec:
             port:
                 number: 80
 ```
+If you used NodePort for Grafana, you can access it directly using the node's IP address and the NodePort assigned to Grafana (e.g., `http://<node-ip>:31000`).
 
 #### 2. Login to Grafana
 The default credentials for Grafana when installed with the kube-prometheus-stack Helm chart are:
