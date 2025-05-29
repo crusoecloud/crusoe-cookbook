@@ -36,6 +36,13 @@
     - L40S
     - DBRX
     - vLLM
+- title: Efficient Training of Large Language Models
+  path: content/finetuning-llm/README.md
+  date: 2025-04-01
+  tags:
+    - LoRA
+    - Llama2
+    - bitsandbytes
 - title: Integrating observability stack into your Kubernetes cluster
   path: content/observability-kubernetes/README.md
   date: 2024-12-11
