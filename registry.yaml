@@ -39,6 +39,8 @@
 - title: Efficient Training of Large Language Models
   path: content/finetuning-llm/README.md
   date: 2025-04-01
+  authors:
+    - akotyla
   tags:
     - LoRA
     - Llama2
